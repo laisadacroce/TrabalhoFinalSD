@@ -6,17 +6,17 @@ entity accumulator is
 generic (width : positive);
 port(
 	clk, rst, enable, sel_mux: in std_logic; --entradas dos registradores e seletor do mux
-	adder_in: in std_logic_vector(N-1 downto 0); --entrada do acumulador
-	result: out std_logic_vector(N-1 downto 0) --saída do acumulador
+	adder_in: in std_logic_vector(width-1 downto 0); --entrada do acumulador
+	result: out std_logic_vector(width-1 downto 0) --saída do acumulador
 );
 end accumulator;
 
 architecture arch of accumulator is
-  signal mux_in0: std_logic_vector(N-1 downto 0); -- entrada do multiplexador quando seletor é 0
-  signal mux_out: std_logic_vector(N-1 downto 0); -- saída do multiplexador
-  signal reg_in: std_logic_vector(N-1 downto 0); -- entrada do registrador
-  signal reg_out: std_logic_vector(N-1 downto 0); -- saída do registrador
-  signal adder_out: std_logic_vector(N-1 downto 0); -- saída do somador
+  signal mux_in0: std_logic_vector(width-1 downto 0); -- entrada do multiplexador quando seletor é 0
+  signal mux_out: std_logic_vector(width-1 downto 0); -- saída do multiplexador
+  signal reg_in: std_logic_vector(width-1 downto 0); -- entrada do registrador
+  signal reg_out: std_logic_vector(width-1 downto 0); -- saída do registrador
+  signal adder_out: std_logic_vector(width-1 downto 0); -- saída do somador
 
 begin
 	MUX : entity work.mux2_1
