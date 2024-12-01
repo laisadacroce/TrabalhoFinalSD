@@ -5,13 +5,13 @@ USE ieee.math_real.ALL;
 
 ENTITY adder_tree IS
 	GENERIC (
-		B : POSITIVE;
-		P : POSITIVE
+		B : POSITIVE := 8;
+		P : POSITIVE := 4;
+		is_unsigned: BOOLEAN
 	);
 
 	PORT (
 		input_vector : IN STD_LOGIC_VECTOR(B * P - 1 DOWNTO 0);
-		is_unsigned: IN BOOLEAN;
 		result : OUT STD_LOGIC_VECTOR((B + INTEGER(log2(real(P)))) - 1 DOWNTO 0)
 	);
 END adder_tree;
@@ -24,24 +24,24 @@ ARCHITECTURE Behavioral OF adder_tree IS
 BEGIN
 	general_case : IF (P > 2) GENERATE
 		left_tree : ENTITY work.adder_tree
-			GENERIC MAP(B, P/2)
+			GENERIC MAP(B, P/2, is_unsigned)
 			PORT MAP(input_vector(width - 1 DOWNTO width/2), left_tree_result);
 
 		right_tree : ENTITY work.adder_tree
-			GENERIC MAP(B, P/2)
+			GENERIC MAP(B, P/2, is_unsigned)
 			PORT MAP(input_vector(width/2 - 1 DOWNTO 0), right_tree_result);
 		
 		at_adder: entity work.at_adder
-			generic map(left_tree_result'length)
-			port map(left_tree_result, right_tree_result, is_unsigned, result);
+			generic map(left_tree_result'length, is_unsigned)
+			port map(left_tree_result, right_tree_result, result);
 
 	END GENERATE;
 
 	base_case : IF P = 2 GENERATE
 		
 		at_adder: entity work.at_adder
-			generic map(width/2)
-			port map(input_vector(width - 1 DOWNTO width/2), input_vector(width/2 - 1 DOWNTO 0), is_unsigned, result);
+			generic map(width/2, is_unsigned)
+			port map(input_vector(width - 1 DOWNTO width/2), input_vector(width/2 - 1 DOWNTO 0), result);
 			
 	END GENERATE;
 

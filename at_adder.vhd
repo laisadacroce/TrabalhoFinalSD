@@ -3,10 +3,11 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
 ENTITY at_adder IS
-    GENERIC (width : INTEGER);
+    GENERIC (width : POSITIVE;
+				is_unsigned: BOOLEAN
+	 );
     PORT (
         A, B : IN std_logic_vector(width - 1 DOWNTO 0);
-        is_unsigned: IN BOOLEAN;
         result : OUT std_logic_vector(width DOWNTO 0)
     );
 END at_adder;
