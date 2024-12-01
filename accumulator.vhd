@@ -20,7 +20,7 @@ architecture arch of accumulator is
 begin
 	MUX : entity work.mux2_1
 		generic map (width => width)
-		port map(adder_out, to_unsigned(16, adder_out'length), sel_mux, mux_out);
+		port map(adder_out, std_logic_vector(to_unsigned(16, adder_out'length)), sel_mux, mux_out);
 
 	REG: entity work.reg
 		generic map (width => width)
