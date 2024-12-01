@@ -12,7 +12,6 @@ port(
 end accumulator;
 
 architecture arch of accumulator is
-  signal mux_in0: std_logic_vector(width-1 downto 0); -- entrada do multiplexador quando seletor é 0
   signal mux_out: std_logic_vector(width-1 downto 0); -- saída do multiplexador
   signal reg_in: std_logic_vector(width-1 downto 0); -- entrada do registrador
   signal reg_out: std_logic_vector(width-1 downto 0); -- saída do registrador
@@ -21,7 +20,7 @@ architecture arch of accumulator is
 begin
 	MUX : entity work.mux2_1
 		generic map (width => width)
-		port map(adder_out, (others => '0'), sel_mux, mux_out);
+		port map(adder_out, to_unsigned(16, adder_out'length), sel_mux, mux_out);
 
 	REG: entity work.reg
 		generic map (width => width)
