@@ -6,11 +6,11 @@ USE ieee.numeric_std.ALL;
 ENTITY mode2 IS
 	GENERIC (
 		width : POSITIVE;
-    b : POSITIVE
+    		b : POSITIVE
 	);
 	PORT (
 		clk, csample, cdc, cacc, sel_acc, reset : IN STD_LOGIC;
-    sample : IN STD_LOGIC_VECTOR(width*b -1 DOWNTO 0);
+    		sample : IN STD_LOGIC_VECTOR(width*b -1 DOWNTO 0);
 		dc : OUT STD_LOGIC_VECTOR(b - 1 DOWNTO 0)
 	);
 END mode2;
@@ -35,10 +35,12 @@ BEGIN
     PORT MAP(clk, reset, cacc, sel_acc, acc_in, acc_out);
 
  ADDERTREE: ENTITY work.adder_tree
-   GENERIC MAP()
-   PORT MAP();
+   GENERIC MAP(B => b,
+	      P => width,
+	      is_unsigned => true)
+   PORT MAP(sample, adder_tree_out);
 
-   reg_dc_in <= acc_out(b+ POSITIVE(ceil(log2(width))) DOWNTO POSITIVE(ceil(log2(width)))) --CONFIRMAR ?
+   reg_dc_in <= acc_out(b+ POSITIVE(ceil(log2(width))) DOWNTO POSITIVE(ceil(log2(width)))) --Divisão por 32 (desloca 5 bits para a direita)
 
 END ARCH;
   
