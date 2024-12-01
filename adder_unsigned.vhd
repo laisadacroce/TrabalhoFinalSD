@@ -2,7 +2,7 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY adder_unsigned IS --é unsigned porque somente é utilizado para valores positivos (ou após o abs ou pro reg cont)
+ENTITY adder_unsigned IS 
     GENERIC (width : INTEGER);
     PORT (
         A, B : IN unsigned(N - 1 DOWNTO 0);
