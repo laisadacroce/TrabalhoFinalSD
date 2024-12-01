@@ -5,8 +5,8 @@ USE ieee.math_real.ALL;
 
 ENTITY adder_tree IS
 	GENERIC (
-		B : POSITIVE := 8;
-		P : POSITIVE := 4;
+		B : POSITIVE;
+		P : POSITIVE;
 		is_unsigned: BOOLEAN
 	);
 
