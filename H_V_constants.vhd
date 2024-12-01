@@ -20,7 +20,7 @@ begin
         port map(H_V_vector(63 - 8*i DOWNTO 64 - 8*(i+1)), H_V_vector(79 + 8*i DOWNTO 80 + 8*(i-1)), subtractions_result(71 - 9*i DOWNTO 72 - 9*(i+1)));
 
 
-        multiplications_result(95 - 12 * i DOWNTO 96 - 12 *(i + 1)) <= std_logic_vector(resize(to_signed(i + 1, 4) * signed(subtractions_result(71 - 9*i DOWNTO 72 - 9*(i+1))), 12));
+        multiplications_result(95 - 12 * i DOWNTO 96 - 12 *(i + 1)) <= std_logic_vector(resize(to_signed(i + 1, 5) * signed(subtractions_result(71 - 9*i DOWNTO 72 - 9*(i+1))), 12));
 
     end generate;
 
