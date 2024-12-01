@@ -1,35 +1,35 @@
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity accumulator is
-generic (width : positive);
-port(
-	clk, rst, enable, sel_mux: in std_logic; --entradas dos registradores e seletor do mux
-	adder_in: in std_logic_vector(width-1 downto 0); --entrada do acumulador
-	result: out std_logic_vector(width-1 downto 0) --saída do acumulador
-);
-end accumulator;
+ENTITY accumulator IS
+	GENERIC (width : POSITIVE);
+	PORT (
+		clk, rst, enable, sel_mux : IN STD_LOGIC; --entradas dos registradores e seletor do mux
+		adder_in : IN STD_LOGIC_VECTOR(width - 1 DOWNTO 0); --entrada do acumulador
+		result : OUT STD_LOGIC_VECTOR(width - 1 DOWNTO 0) --saída do acumulador
+	);
+END accumulator;
 
-architecture arch of accumulator is
-  signal mux_out: std_logic_vector(width-1 downto 0); -- saída do multiplexador
-  signal reg_in: std_logic_vector(width-1 downto 0); -- entrada do registrador
-  signal reg_out: std_logic_vector(width-1 downto 0); -- saída do registrador
-  signal adder_out: std_logic_vector(width-1 downto 0); -- saída do somador
+ARCHITECTURE arch OF accumulator IS
+	SIGNAL mux_out : STD_LOGIC_VECTOR(width - 1 DOWNTO 0); -- saída do multiplexador
+	SIGNAL reg_in : STD_LOGIC_VECTOR(width - 1 DOWNTO 0); -- entrada do registrador
+	SIGNAL reg_out : STD_LOGIC_VECTOR(width - 1 DOWNTO 0); -- saída do registrador
+	SIGNAL adder_out : STD_LOGIC_VECTOR(width - 1 DOWNTO 0); -- saída do somador
 
-begin
-	MUX : entity work.mux2_1
-		generic map (width => width)
-		port map(adder_out, std_logic_vector(to_unsigned(16, adder_out'length)), sel_mux, mux_out);
+BEGIN
+	MUX : ENTITY work.mux2_1
+		GENERIC MAP(width => width)
+		PORT MAP(adder_out, STD_LOGIC_VECTOR(to_unsigned(16, adder_out'length)), sel_mux, mux_out);
 
-	REG: entity work.reg
-		generic map (width => width)
-		port map(clk, enable, rst, mux_out, reg_out); 
+	REG : ENTITY work.reg
+		GENERIC MAP(width => width)
+		PORT MAP(clk, enable, rst, mux_out, reg_out);
 
-	ADDER: entity work.adder_unsigned
-		generic map (width => width)
-		port map(unsigned(adder_in), unsigned(reg_out), adder_out);
+	ADDER : ENTITY work.adder_unsigned
+		GENERIC MAP(width => width)
+		PORT MAP(unsigned(adder_in), unsigned(reg_out), adder_out);
 
-	result <= reg_out; 
+	result <= reg_out;
 
-end arch;
+END arch;
