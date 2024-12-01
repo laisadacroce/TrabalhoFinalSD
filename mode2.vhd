@@ -43,4 +43,4 @@ BEGIN
 
 	reg_dc_in <= acc_out(b + POSITIVE(ceil(log2(width))) DOWNTO POSITIVE(ceil(log2(width)))) --Divisão por 32 (desloca 5 bits para a direita)
 
-	END ARCH;
+	END arch;
