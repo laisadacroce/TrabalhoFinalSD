@@ -5,7 +5,6 @@ USE ieee.math_real.ALL;
 
 ENTITY clip IS
 	PORT (
-		clk, enable, rst : IN STD_LOGIC; --DÚVIDA: precisa ser entrada do módulo? É entrada implícita na imagem do clip?
 		input : IN STD_LOGIC_VECTOR(10 DOWNTO 0); --in
 		output : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) --out
 	);
@@ -13,7 +12,7 @@ END clip;
 
 ARCHITECTURE arch OF clip IS
 	SIGNAL sel_mux2, or_indexes_8_9 : STD_LOGIC; --envolvem manipulação do vetor input
-	SIGNAL mux2_in0, reg_in : STD_LOGIC_VECTOR(7 DOWNTO 0); --conexões internas entre os módulos
+	SIGNAL mux2_in0 : STD_LOGIC_VECTOR(7 DOWNTO 0); --conexões internas entre os módulos
 BEGIN
 
 	or_indexes_8_9 <= input(8) OR input(9);
@@ -27,9 +26,6 @@ BEGIN
 	--se o seletor de mux2 for igual a 1, o número é negativo, então retorna 0; senão, retorna o valor positivo
 	MUX2 : ENTITY work.mux2_1
 		GENERIC MAP(width => 8)
-		PORT MAP(mux2_in0, "00000000", input(10), reg_in);
+		PORT MAP(mux2_in0, "00000000", input(10), output);
 
-	REG : ENTITY work.reg
-		GENERIC MAP(width => 8)
-		PORT MAP(clk, enable, rst, reg_in, output);
 END arch;
