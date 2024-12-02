@@ -1,20 +1,8 @@
-maior_valor = 0
+H_sample = [0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0] #17 samples
+H_sum = 0
+
 for i in range(8):
-    maior_valor += (i+1)*255
+    H_sum += (i + 1)*(H_sample[i + 8] - H_sample[6 - i])
 
-b = 5*maior_valor + 32
-
-print(b)
-b2 = b//(2^6)
-print(b2)
-
-
-menor_valor = 0
-for i in range(8):
-    menor_valor += (i + 1)*(-255)
-
-b = 5*menor_valor + 32
-print(b)
-
-b2 = b//(2^6)
-print(b2)
+H_value = H_sum
+print(H_value)
