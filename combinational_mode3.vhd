@@ -2,17 +2,17 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-entity mode3 is
+entity combinational_mode3 is
 port(
-    x, y: in std_logic_vector(3 downto 0);
-    a: in std_logic_vector(13 downto 0);
-    b, c: in std_logic_vector(10 downto 0);
-    plane: out std_logic_vector(7 downto 0)
+    x, y: in std_logic_vector(3 downto 0); -- unsigned integers
+    a: in std_logic_vector(13 downto 0); -- signed integer
+    b, c: in std_logic_vector(10 downto 0); -- signed integer
+    plane: out std_logic_vector(7 downto 0) -- unsigned integer
 
 );
-end mode3;
+end combinational_mode3;
 
-architecture Behavioral of mode3 is
+architecture Behavioral of combinational_mode3 is
     SIGNAL subtractorsIn: std_logic_vector(7 downto 0);
     SIGNAL subtractorsOut: std_logic_vector(9 downto 0);
     SIGNAL multiplicationsIn: std_logic_vector(21 downto 0);
