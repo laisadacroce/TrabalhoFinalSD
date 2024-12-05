@@ -3,7 +3,8 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
 ENTITY accumulator IS
-	GENERIC (width : POSITIVE);
+	GENERIC (width : POSITIVE;
+		initial_value : INTEGER);
 	PORT (
 		clk, rst, enable, sel_mux : IN STD_LOGIC; --entradas dos registradores e seletor do mux
 		adder_in : IN STD_LOGIC_VECTOR(width - 1 DOWNTO 0); --entrada do acumulador
@@ -16,11 +17,12 @@ ARCHITECTURE arch OF accumulator IS
 	SIGNAL reg_in : STD_LOGIC_VECTOR(width - 1 DOWNTO 0); -- entrada do registrador
 	SIGNAL reg_out : STD_LOGIC_VECTOR(width - 1 DOWNTO 0); -- saída do registrador
 	SIGNAL adder_out : STD_LOGIC_VECTOR(width - 1 DOWNTO 0); -- saída do somador
+	CONSTANT unsigned_initial_value : STD_LOGIC_VECTOR(width - 1 DOWNTO 0) := STD_LOGIC_VECTOR(to_unsigned(initial_value, width));
 
 BEGIN
 	MUX : ENTITY work.mux2_1
 		GENERIC MAP(width => width)
-		PORT MAP(adder_out, STD_LOGIC_VECTOR(to_unsigned(16, adder_out'length)), sel_mux, mux_out);
+		PORT MAP(adder_out, unsigned_initial_value, sel_mux, mux_out);
 
 	REG : ENTITY work.reg
 		GENERIC MAP(width => width)
