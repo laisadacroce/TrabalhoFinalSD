@@ -7,37 +7,24 @@ ENTITY counter IS
 		width : POSITIVE
 	);
 	PORT (
-		clk, zi, ci : IN STD_LOGIC;
+		clk, zi, ci, rst : IN STD_LOGIC;
+		adder_in : IN STD_LOGIC_VECTOR(width - 1 DOWNTO 0);
 		less : OUT STD_LOGIC;
 		address : OUT STD_LOGIC_VECTOR(width - 2 DOWNTO 0)
 	);
 END counter;
 
 ARCHITECTURE Behavioral OF counter IS
-	SIGNAL muxOut, regOut, muxIn : STD_LOGIC_VECTOR(width - 1 DOWNTO 0);
-	SIGNAL carryOut : STD_LOGIC;
-	SIGNAL adderOut : STD_LOGIC_VECTOR(width - 2 DOWNTO 0);
+	SIGNAL regOut: STD_LOGIC_VECTOR(width - 1 DOWNTO 0);
 
 BEGIN
-	mux : ENTITY work.mux2_1
-		GENERIC MAP(width)
-		PORT MAP(muxIn, (OTHERS => '0'), zi, muxOut);
-
-	reg : ENTITY work.reg
-		GENERIC MAP(width)
-		PORT MAP(clk, ci, '0', muxOut, regOut);
+	accumulator : ENTITY work.accumulator
+		GENERIC MAP(width, 0) --valor inicial igual a 0
+		PORT MAP(clk, rst, ci, zi, adder_in, regOut);
 
 	-- Splitter logic and status signal --
 	less <= NOT regOut(width - 1);
 	address <= regOut(width - 2 DOWNTO 0);
 	------------------------------------
-
-	adder : ENTITY work.adder
-		GENERIC MAP(width - 1)
-		PORT MAP(regOut(width - 2 DOWNTO 0), ((width - 2 DOWNTO 1 => '0') & '1'), adderOut, carryOut);
-
-	-- Concatenator logic --
-	muxIn <= carryOut & adderOut;
-	------------------------
 	
 END Behavioral;
