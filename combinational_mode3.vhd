@@ -47,4 +47,4 @@ begin
         clip: entity work.clip
         port map(adder_treeOut(15 downto 5), plane);
 
-end mode3;
+end Behavioral;
