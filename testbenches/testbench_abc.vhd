@@ -30,7 +30,7 @@ begin
     );
 
   stim_proc: process
-    file stimulus_file : text open read_mode is "estimulos_abd.dat";
+    file stimulus_file : text open read_mode is "estimulos_abc.dat";
     variable line_data : line;
     variable H_val, V_val : bit_vector(14 downto 0);
     variable H_byte, V_byte : bit_vector(7 downto 0);
