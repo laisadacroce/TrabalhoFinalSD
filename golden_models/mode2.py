@@ -1,10 +1,3 @@
-#uma entrada por vez em forma de vetor
-#somar so tudo (32 nums) entrada em binario (256 bits)
-
-#sum 16 valores de H e armazena, depoi srecebe V(e soma seus valores)
-#dividir por 32
-#resultadp bin (8 bits)
-
 #Modo 2 - Golden Model
 import random
 
