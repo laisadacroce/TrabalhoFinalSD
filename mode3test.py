@@ -11,7 +11,7 @@ def clip(number) -> int:
     elif number < 0:
         return 0
     else:
-        return number;
+        return number
 
 HV_sample = [0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0] #17 samples
 HV_sum = 0

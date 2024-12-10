@@ -31,7 +31,7 @@ BEGIN
 			GENERIC MAP(B, P/2, is_unsigned)
 			PORT MAP(input_vector(width/2 - 1 DOWNTO 0), right_tree_result);
 		
-		at_adder: entity work.at_adder
+		adder: entity work.adder
 			generic map(left_tree_result'length, is_unsigned)
 			port map(left_tree_result, right_tree_result, result);
 
@@ -39,7 +39,7 @@ BEGIN
 
 	base_case : IF P = 2 GENERATE
 		
-		at_adder: entity work.at_adder
+		adder: entity work.adder
 			generic map(width/2, is_unsigned)
 			port map(input_vector(width - 1 DOWNTO width/2), input_vector(width/2 - 1 DOWNTO 0), result);
 			

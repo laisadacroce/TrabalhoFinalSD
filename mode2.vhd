@@ -4,43 +4,38 @@ USE ieee.math_real.ALL;
 USE ieee.numeric_std.ALL;
 
 ENTITY mode2 IS
-	GENERIC (
-		width : POSITIVE := 16;
-		b : POSITIVE := 8
-	);
 	PORT (
-		clk, cm2, cdc, cacc, sel_acc, reset : IN STD_LOGIC;
-		sample : IN STD_LOGIC_VECTOR(width * b - 1 DOWNTO 0);
-		dc : OUT STD_LOGIC_VECTOR(b - 1 DOWNTO 0)
+		clk, sel_sample, csamples2, sel_acc, cacc, cdc : IN STD_LOGIC;
+		sample0, sample1 : IN STD_LOGIC_VECTOR(127 DOWNTO 0);
+		dc : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
 	);
 END mode2;
 
-ARCHITECTURE arch OF mode2 IS
-	SIGNAL m2_reg_out : STD_LOGIC_VECTOR(width * b - 1 DOWNTO 0);
-	SIGNAL adder_tree_out : STD_LOGIC_VECTOR(b + POSITIVE(ceil(log2(real(width)))) - 1 DOWNTO 0);
-	SIGNAL acc_in, acc_out : STD_LOGIC_VECTOR(b + POSITIVE(ceil(log2(real(width)))) DOWNTO 0);
-	SIGNAL dc_reg_in : STD_LOGIC_VECTOR(b - 1 DOWNTO 0);
-
+ARCHITECTURE Behavioral OF mode2 IS
+	SIGNAL muxOut, samples_reg2Out: std_logic_vector(127 DOWNTO 0);
+	SIGNAL adder_treeOut: std_logic_vector(11 DOWNTO 0);
+	SIGNAL accumulatorOut: std_logic_vector(12 DOWNTO 0);
 BEGIN
-	M2_REG : ENTITY work.reg
-		GENERIC MAP(width => width * b)
-		PORT MAP(clk, cm2, reset, sample, m2_reg_out);
 
-	DC_REG : ENTITY work.reg
-		GENERIC MAP(width => b)
-		PORT MAP(clk, cdc, reset, dc_reg_in, dc);
+	mux: entity work.mux2_1
+	generic map(128)
+	port map(sample0, sample1, sel_sample, muxOut);
 
-	ACC : ENTITY work.accumulator
-		GENERIC MAP(width => b + POSITIVE(ceil(log2(real(width)))) + 1, initial_value => 16)
-		PORT MAP(clk, reset, cacc, sel_acc, acc_in, acc_out);
+	samples2_reg: entity work.reg
+	generic map(128)
+	port map(clk, csamples2, '0', muxOut, samples_reg2Out);
 
-	ADDERTREE : ENTITY work.adder_tree
-		GENERIC MAP(
-			B => b,
-			P => width,
-			is_unsigned => true)
-		PORT MAP(sample, adder_tree_out);
+	adder_tree: entity work.adder_tree
+	generic map(8, 16, true)
+	port map(samples_reg2Out, adder_treeOut);
 
-	dc_reg_in <= acc_out(b + POSITIVE(ceil(log2(real(width)))) - 1 DOWNTO POSITIVE(ceil(log2(real(width))))); --Divisão por 32 (desloca 5 bits para a direita) -- CONFIRMAR INTERVALO (ONDE COLOCAR O -1)
+	accumulator: entity work.accumulator
+	generic map(13, 16)
+	port map(clk, cacc, sel_acc, '0' & adder_treeOut, accumulatorOut);
 
-	END arch;
+	dc_reg: entity work.reg
+	generic map(8)
+	port map(clk, cdc, '0', accumulatorOut(12 downto 5), dc);
+
+
+END Behavioral;
