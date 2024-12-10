@@ -18,30 +18,24 @@ architecture Behavioral of combinational_mode3 is
     SIGNAL multiplicationsIn: std_logic_vector(21 downto 0);
     SIGNAL multiplications_result: std_logic_vector(27 downto 0);
     SIGNAL adder_treeOut: std_logic_vector(15 downto 0);
-
 begin
 
     sub_mult: for i in 0 to 1 generate
 
-        mux_xy: entity work.mux2_1
-        generic map(4)
-        port map(x, y, i, subtractorsIn(7 - 4*i downto 8 - 4*(i+1)));
+        subtractorsIn <= x & y;
 
-
-        unsigned_subtractor: entity work.subtractor
+        subtractor: entity work.subtractor_unsigned
         generic map(4)
         port map(subtractorsIn(7 - 4*i downto 8 - 4*(i+1)), "0111", subtractorsOut(9 - 5*i downto 10 - 5*(i+1)));
-    
-        mux_bc: entity work.mux2_1
-        generic map(11)
-        port map(b, c, i, multiplicationsIn(21 - 11 * i downto 22 - 11*(i + 1)));
         
+        multiplicationsIn <= b & c;
+
         multiplications_result(27 - 14*i downto 28 - 14*(i+1)) <= std_logic_vector(resize(signed(subtractorsOut(9 - 5*i downto 10 - 5*(i+1))) * signed(multiplicationsIn(21 - 11 * i downto 22 - 11*(i + 1))), 14));
 
     end generate;
 
         adder_tree: entity work.adder_tree
-        generic map(14, 4)
+        generic map(14, 4, false)
         port map(a & multiplications_result & std_logic_vector(to_signed(16, 14)), adder_treeOut);
 
         clip: entity work.clip

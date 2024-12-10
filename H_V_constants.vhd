@@ -15,7 +15,7 @@ ARCHITECTURE Behavioral OF H_V_constants IS
 begin
 
     multiplications: for i in 0 to 7 generate
-        subtractor : entity work.subtractor
+        subtractor : entity work.subtractor_unsigned
         generic map(8)
         port map(H_V_vector(63 - 8*i DOWNTO 64 - 8*(i+1)), H_V_vector(79 + 8*i DOWNTO 80 + 8*(i-1)), subtractions_result(71 - 9*i DOWNTO 72 - 9*(i+1)));
 

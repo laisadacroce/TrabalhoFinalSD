@@ -2,7 +2,7 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY subtractor IS
+ENTITY subtractor_unsigned IS
 	GENERIC (
 		width : POSITIVE
 	);
@@ -14,9 +14,9 @@ ENTITY subtractor IS
 		value1, value2 : IN STD_LOGIC_VECTOR(width - 1 DOWNTO 0);
 		result : OUT STD_LOGIC_VECTOR(width DOWNTO 0)
 	);
-END subtractor;
+END subtractor_unsigned;
 
-ARCHITECTURE Behavioral OF subtractor IS
+ARCHITECTURE Behavioral OF subtractor_unsigned IS
 
 BEGIN
 	-- 0's are concatenated to both values so then they can represent positive numbers in two's complement
