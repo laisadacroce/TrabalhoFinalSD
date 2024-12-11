@@ -9,7 +9,6 @@ ENTITY intra16x16_datapath IS
     -- Samples input
     V_sample, H_sample: in std_logic_vector(127 downto 0);
     corner_sample: in std_logic_vector(7 downto 0);
-
     -- Command signals for counter
     sel_i, ci: in std_logic;
     -- Command signals for mode2
@@ -19,7 +18,9 @@ ENTITY intra16x16_datapath IS
     -- Common command signals
     sel_mode: in std_logic_vector(1 downto 0);
     cmode, cline: in std_logic;
+    -- Output
     line_index: out std_logic_vector(3 downto 0);
+    -- Status signal
     less: out std_logic;
     -- Output
     line: out std_logic_vector(127 DOWNTO 0)
@@ -45,15 +46,9 @@ begin
   port map(clk, sel_sample, csamples2, sel_acc, cacc, cdc, V_sample, H_sample, dc);
   
   -- Concatenating dc 16 times
-  process (dc)
-        variable temp_vec : std_logic_vector(127 downto 0); 
-    begin
-        temp_vec := (others => '0'); 
-        for i in 0 to 15 loop
-            temp_vec((i+1)*8-1 downto i*8) := dc;
-        end loop;
-        dc_line <= temp_vec;
-  end process;
+  generate_dc_line: for i in 0 to 15 generate
+    dc_line( 127 - 8*i downto 128 - 8*(i+1)) <= dc;
+  end generate;
 
 -- COUNTER -----------------------------------------------------------------------------
   counter: ENTITY work.accumulator
@@ -103,7 +98,7 @@ begin
 -----------------------------------------------------------------------------------------
   mode_mux: entity work.mux4_1
   generic map(128)
-  port map(V_sample, H_sample, dc_line, plane_line, sel_mode, mode_muxOut);
+  port map(H_sample, V_sample, dc_line, plane_line, sel_mode, mode_muxOut);
 
   mode_reg: entity work.reg
   generic map(128)

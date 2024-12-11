@@ -13,7 +13,7 @@ end testbench;
 
 architecture tb of testbench is
 
-    signals clk, cm2, cdc, cacc, sel_acc, reset: std_logic;
+    signal clk, cm2, cdc, cacc, sel_acc, reset: std_logic;
     signal sample: std_logic_vector(255 downto 0);
     signal dc: std_logic_vector(7 downto 0);
 

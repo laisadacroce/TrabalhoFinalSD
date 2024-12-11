@@ -24,7 +24,7 @@ begin
 
     controller: entity work.intra16x16_controller
     port map(clk, reset, start, less, mode, done, sel_i, ci, csamples, chv,
-    sel_sample, csamples2, sel_acc, cacc, cdc, cabcy, cmode, cline
+    sel_sample, csamples2, sel_acc, cacc, cdc, cabcy, cmode, cline, sel_mode
     );
 
     datapath: entity work.intra16x16_datapath

@@ -5,6 +5,7 @@ import random
 C2 = lambda num, bits: bin((num + (1 << bits)) % (1 << bits))[2:].zfill(bits)
 
 #Gera 3 casos de teste aleatorios
+
 for _ in range(3):
     print(f"\nTeste {_+1}")
     sample = []
