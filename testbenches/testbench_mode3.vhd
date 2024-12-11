@@ -40,13 +40,6 @@ begin
     while not endfile(stimulus_file) loop
       readline(stimulus_file, line_content);
 
-      read(line_content, input_x);
-      x <= to_stdlogicvector(input_x);
-
-      read(line_content, separator);
-      read(line_content, input_y);
-      y <= to_stdlogicvector(input_y);
-
       read(line_content, separator);
       read(line_content, input_a);
       a <= to_stdlogicvector(input_a);
@@ -59,12 +52,18 @@ begin
       read(line_content, input_c);
       c <= to_stdlogicvector(input_c);
 
+      read(line_content, input_x);
+      x <= to_stdlogicvector(input_x);
+
+      read(line_content, separator);
+      read(line_content, input_y);
+      y <= to_stdlogicvector(input_y);
+
       read(line_content, separator);
       read(line_content, expected_plane);
 
       wait for passo;
 
-      -- Check output
       assert plane = to_stdlogicvector(expected_plane)
         report "Falha na simulaçao: Inputs: x=" & std_logic_vector(input_x) &
                " y=" & std_logic_vector(input_y) &
