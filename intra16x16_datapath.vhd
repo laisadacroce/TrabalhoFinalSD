@@ -19,7 +19,10 @@ ENTITY intra16x16_datapath IS
     -- Common command signals
     sel_mode: in std_logic_vector(1 downto 0);
     cmode, cline: in std_logic;
-    less: out std_logic
+    line_index: out std_logic_vector(3 downto 0);
+    less: out std_logic;
+    -- Output
+    line: out std_logic_vector(127 DOWNTO 0)
   );
 
 END intra16x16_datapath;
@@ -104,11 +107,13 @@ begin
 
   mode_reg: entity work.reg
   generic map(128)
-  port map(clk, cmode, '0', mode_muxOut);
+  port map(clk, cmode, '0', mode_muxOut, mode_regOut);
 
   line_reg: entity work.reg
   generic map(128)
-  port map(clk, cline, '0', mode_regOut);
+  port map(clk, cline, '0', mode_regOut, line);
+
+  line_index <= y;
 
 END Behavioral;
     
